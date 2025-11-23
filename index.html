@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AlgCubing Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              gray: {
+                750: '#2d3748',
+                850: '#1a202c',
+                900: '#111827',
+                950: '#030712', 
+              },
+              accent: {
+                500: '#6366f1', // Indigo
+                600: '#4f46e5',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { background-color: #030712; color: #f3f4f6; }
+      
+      /* Modern Scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+      
+      /* Twisty Player Customization */
+      twisty-player {
+        --twisty-player-height: 100%;
+        --twisty-player-width: 100%;
+      }
+      
+      /* Hide native twisty background to allow our gradients to show through */
+      twisty-player::part(fullscreen-button) { display: none; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@react-three/fiber": "https://aistudiocdn.com/@react-three/fiber@^9.4.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "three": "https://aistudiocdn.com/three@^0.181.2",
+    "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@^10.7.7",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "cubing/alg": "https://cdn.cubing.net/v0/js/cubing/alg",
+    "cubing/twisty": "https://cdn.cubing.net/v0/js/cubing/twisty",
+    "cubing/": "https://aistudiocdn.com/cubing@^0.60.1/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
