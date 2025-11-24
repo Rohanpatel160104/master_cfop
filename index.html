@@ -4,10 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AlgCubing Pro</title>
+    
+    <!-- Runtime Polyfills -->
+    <script>
+      // Polyfill process.env for the GenAI SDK
+      if (typeof process === 'undefined') {
+        window.process = { env: { API_KEY: '' } };
+      }
+    </script>
+
+    <!-- Tailwind & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -18,58 +32,83 @@
               mono: ['JetBrains Mono', 'monospace'],
             },
             colors: {
-              gray: {
-                750: '#2d3748',
-                850: '#1a202c',
-                900: '#111827',
-                950: '#030712', 
-              },
-              accent: {
-                500: '#6366f1', // Indigo
-                600: '#4f46e5',
-              }
+              gray: { 750: '#2d3748', 850: '#1a202c', 900: '#111827', 950: '#030712' },
+              accent: { 500: '#6366f1', 600: '#4f46e5' }
             }
           }
         }
       }
     </script>
+
     <style>
-      body { background-color: #030712; color: #f3f4f6; }
+      body { background-color: #030712; color: #f3f4f6; margin: 0; }
       
-      /* Modern Scrollbar */
+      /* Scrollbar */
       ::-webkit-scrollbar { width: 6px; height: 6px; }
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
       ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
       
-      /* Twisty Player Customization */
-      twisty-player {
-        --twisty-player-height: 100%;
-        --twisty-player-width: 100%;
-      }
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; }
       
-      /* Hide native twisty background to allow our gradients to show through */
+      /* Twisty Player */
+      twisty-player {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
       twisty-player::part(fullscreen-button) { display: none; }
+      
+      /* Animations */
+      .fade-in { animation: fadeIn 0.3s ease-out; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+      
+      /* Error Screen */
+      #error-boundary { display: none; }
     </style>
-  <script type="importmap">
+
+    <script type="importmap">
 {
   "imports": {
-    "@react-three/fiber": "https://aistudiocdn.com/@react-three/fiber@^9.4.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "three": "https://aistudiocdn.com/three@^0.181.2",
-    "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@^10.7.7",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "cubing/alg": "https://cdn.cubing.net/v0/js/cubing/alg",
-    "cubing/twisty": "https://cdn.cubing.net/v0/js/cubing/twisty",
-    "cubing/": "https://aistudiocdn.com/cubing@^0.60.1/"
+    "cubing/alg": "https://cdn.cubing.net/v0/js/cubing/alg/index.js",
+    "cubing/twisty": "https://cdn.cubing.net/v0/js/cubing/twisty/index.js",
+    "cubing/": "https://aistudiocdn.com/cubing@^0.61.0/"
   }
 }
 </script>
-</head>
+  </head>
   <body>
-    <div id="root"></div>
+    <div id="app" class="h-screen flex bg-gray-950 text-gray-100 font-sans overflow-hidden">
+        <div class="m-auto text-center animate-pulse">
+            <div class="text-indigo-500 mb-2 font-bold text-xl">AlgCubing</div>
+            <div class="text-xs text-gray-600 font-mono">LOADING APPLICATION...</div>
+        </div>
+    </div>
+
+    <!-- Error Display -->
+    <div id="error-boundary" class="fixed inset-0 bg-red-950/90 flex items-center justify-center p-8 z-50">
+        <div class="max-w-lg bg-red-900 border border-red-700 p-6 rounded-lg text-red-100 shadow-2xl">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Application Error
+            </h2>
+            <pre id="error-message" class="text-xs font-mono bg-black/30 p-4 rounded overflow-auto whitespace-pre-wrap"></pre>
+            <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-red-800 hover:bg-red-700 rounded text-sm font-bold">Reload</button>
+        </div>
+    </div>
+
+    <!-- Error Handler -->
+    <script>
+      function showError(msg) {
+        document.getElementById('error-boundary').style.display = 'flex';
+        document.getElementById('error-message').textContent = msg;
+      }
+      window.addEventListener('error', e => showError(e.message));
+      window.addEventListener('unhandledrejection', e => showError(e.reason));
+    </script>
+
+    <!-- App Entry -->
+    <script type="module" src="./js/app.js"></script>
   </body>
 </html>
