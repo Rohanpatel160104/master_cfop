@@ -13,6 +13,25 @@ import { Alg } from "cubing/alg";
 import { CFOP_ALGORITHMS, Stage, AlgorithmCase } from './data/cfopAlgorithms';
 import { UserData, SolveRecord } from './types';
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'twisty-player': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        alg?: string;
+        "experimental-setup-alg"?: string;
+        "experimental-stickering"?: string;
+        background?: string;
+        "control-panel"?: string;
+        visualization?: string;
+        tempo?: number;
+        "camera-latitude"?: number;
+        "camera-longitude"?: number;
+        "camera-distance"?: number;
+      };
+    }
+  }
+}
+
 type ViewMode = 'grid' | 'focus';
 type Tab = 'practice' | 'coach';
 type AppMode = 'library' | 'practice';
