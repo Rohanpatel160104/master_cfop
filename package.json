@@ -17,7 +17,7 @@
     "@react-three/drei": "^10.7.7",
     "@google/genai": "^1.30.0",
     "@cubing/alg": "latest",
-    "cubing/twisty": "latest",
+    "@cubing/twisty": "latest",
     "cubing": "^0.60.1"
   },
   "devDependencies": {
